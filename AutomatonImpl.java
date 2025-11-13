@@ -1,18 +1,15 @@
 import java.util.*;
 
-/*
- * Nondeterministic finite automaton implementation.
- * States are ints. Transitions are labeled by chars.
- */
+
 public class AutomatonImpl implements Automaton {
-    // transitions: state -> (label -> set of dest states)
+
     private final Map<Integer, Map<Character, Set<Integer>>> transitions;
 
-    // start and accept sets
+
     private final Set<Integer> startStates;
     private final Set<Integer> acceptStates;
 
-    // current active states during execution
+
     private Set<Integer> currentStates;
 
     public AutomatonImpl() {
@@ -22,11 +19,10 @@ public class AutomatonImpl implements Automaton {
         currentStates = new HashSet<>();
     }
 
-    /* Creation operations */
 
     @Override
     public void addState(int s, boolean is_start, boolean is_accept) {
-        // ensure transition map exists for state
+       
         transitions.computeIfAbsent(s, k -> new HashMap<>());
         if (is_start) startStates.add(s);
         if (is_accept) acceptStates.add(s);
@@ -39,15 +35,15 @@ public class AutomatonImpl implements Automaton {
         map.computeIfAbsent(label, k -> new HashSet<>());
         map.get(label).add(s_final);
 
-        // Ensure destination state has an entry so future addState won't blow up if not added explicitly
+       
         transitions.computeIfAbsent(s_final, k -> new HashMap<>());
     }
 
-    /* Execution operations */
+
 
     @Override
     public void reset() {
-        // copy start states
+
         currentStates = new HashSet<>(startStates);
     }
 
